@@ -34,4 +34,23 @@ const createBooking = async (req, res) => {
   }
 };
 
-module.exports = { createBooking };
+const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll(); // Fetch all bookings
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        bookings,
+      },
+    });
+  } catch (error) {
+    console.error(error); // Log error for debugging
+    return res.status(500).json({
+      status: 'error',
+      message: 'Failed to retrieve bookings',
+    });
+  }
+};
+
+module.exports = { createBooking, getAllBookings };

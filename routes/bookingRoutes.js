@@ -8,5 +8,6 @@ const {
 } = require('../controller/bookingController');
 
 router.route('/').post(createBooking);
+router.route('/').get(getAllBookings);
 
 module.exports = router;
