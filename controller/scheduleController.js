@@ -85,8 +85,37 @@ const updateSchedule = async (req, res) => {
   }
 };
 
+const deleteSchedule = async (req, res) => {
+  const { id } = req.params; // Get schedule ID from request parameters
+
+  try {
+    const deleted = await Schedule.destroy({
+      where: { id },
+    });
+
+    if (deleted) {
+      return res.status(204).json({
+        status: 'success',
+        message: 'Schedule deleted successfully',
+      });
+    }
+
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Schedule not found',
+    });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while deleting the schedule',
+    });
+  }
+};
+
 module.exports = {
   createSchedule,
   getAllSchedules,
   updateSchedule,
+  deleteSchedule,
 };
