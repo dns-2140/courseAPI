@@ -17,7 +17,7 @@ A Node.js application that manages schedules and bookings for courses. This appl
 - MySQL or another supported database
 
 ```bash
-testtugas/
+COURSEAPI/
 ├── models/               # Database models (Sequelize)
 │   ├── booking.js        # Booking model
 │   ├── course.js         # Course model
