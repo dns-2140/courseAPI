@@ -53,4 +53,68 @@ const getAllBookings = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, getAllBookings };
+const updateBooking = async (req, res) => {
+  const { id } = req.params; // Get booking ID from request parameters
+  const { userId, scheduleId, status } = req.body; // Get new values from request body
+
+  try {
+    const [updated] = await Booking.update(
+      { userId, scheduleId, status },
+      { where: { id } }
+    );
+
+    if (updated) {
+      const updatedBooking = await Booking.findByPk(id); // Fetch updated booking
+      return res.status(200).json({
+        status: 'success',
+        data: { updatedBooking },
+      });
+    }
+
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Booking not found',
+    });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while updating the booking',
+    });
+  }
+};
+
+const deleteBooking = async (req, res) => {
+  const { id } = req.params; // Get booking ID from request parameters
+
+  try {
+    const deleted = await Booking.destroy({
+      where: { id },
+    });
+
+    if (deleted) {
+      return res.status(204).json({
+        status: 'success',
+        message: 'Booking deleted successfully',
+      });
+    }
+
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Booking not found',
+    });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while deleting the booking',
+    });
+  }
+};
+
+module.exports = {
+  createBooking,
+  getAllBookings,
+  updateBooking,
+  deleteBooking,
+};
